@@ -1,0 +1,27 @@
+require('dotenv').config();
+const express = require('express');
+const mongoose = require('mongoose');
+
+const userRoutes = require('/home/user/projects/newnext/routes/userRoutes.js');      // For signup
+const signInRoutes = require('/home/user/projects/newnext/routes/signInRoutes.js');  // For signin
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+const MONGO_URI = process.env.MONGO_ATLAS_URI;
+
+app.use(express.json()); // To parse JSON request bodies
+
+// Connect to MongoDB
+mongoose.connect(MONGO_URI)
+  .then(() => console.log('Connected to MongoDB Atlas'))
+  .catch((err) => console.error('MongoDB connection error:', err));
+
+// Use user signup routes under /api/users
+app.use('/api/users', userRoutes);
+
+// Use sign-in routes under /api/users (e.g. /api/users/signin)
+app.use('/api/users', signInRoutes);
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
