@@ -5,10 +5,20 @@ const Event = require('../models/Event');
 // POST /api/events - Create new event (admin only)
 router.post('/', async (req, res) => {
   try {
-    const { title, description, date, adminId, tickets, ticketPrice } = req.body;
+    const {
+      title,
+      description,
+      date,
+      adminId,
+      tickets,
+      ticketPrice,
+      category,
+      image,     // Expecting a URL string
+      location
+    } = req.body;
 
-    if (!title || !date || !adminId || tickets == null || ticketPrice == null) {
-      return res.status(400).json({ message: 'Title, date, adminId, tickets, and ticketPrice are required' });
+    if (!title || !date || !adminId || tickets == null || ticketPrice == null || !location) {
+      return res.status(400).json({ message: 'Title, date, adminId, tickets, ticketPrice, and location are required.' });
     }
 
     const newEvent = new Event({
@@ -18,7 +28,11 @@ router.post('/', async (req, res) => {
       createdBy: adminId,
       tickets,
       ticketPrice,
+      category: category || 'Other',
+      image: image || '',
+      location
     });
+    
 
     await newEvent.save();
     res.status(201).json(newEvent);

@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('/home/user/projects/newnext/models/User.js'); // Adjust path if needed
+const User = require('../models/User'); // Adjust path if needed
 
 const router = express.Router();
 
